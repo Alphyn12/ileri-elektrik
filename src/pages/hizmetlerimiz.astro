@@ -11,6 +11,7 @@ import { gorseller } from '../data/katalog';
 
 import malzemeImg from '../assets/img/anahtar-priz.jpg';
 import tesisatImg from '../assets/img/pano.jpg';
+import mimariImg from '../assets/img/mimari.jpg';
 
 const hizmetler = [
   {
@@ -39,6 +40,15 @@ const hizmetler = [
     text: 'Cephe, kapı önü, balkon ve bahçe için suya ve toza dayanıklı armatürler. Binanızın mimarisini gece de öne çıkaran, yolu güvenle aydınlatan çözümler.',
     items: ['Cephe aplikleri', 'Bahçe direkleri', 'Zemin armatürleri', 'Projektörler', 'Sensörlü lambalar'],
     msg: 'Merhaba, dış mekân ve bahçe aydınlatması hakkında bilgi almak istiyorum.',
+  },
+  {
+    id: 'mimari-cozumler',
+    title: 'Mimari çözümler', short: 'Mimari çözümler',
+    img: mimariImg,
+    alt: 'Modern bina cephesinde sıcak ışıklı çizgisel aydınlatma',
+    text: 'Binanın mimarisini öne çıkaran ışık çözümleri. Cephe, giriş, merdiven ve ortak alanlarda gizli ışık, çizgisel LED ve vurgu aydınlatmasıyla mekâna karakter kazandırıyor, projeye en uygun armatürü birlikte seçiyoruz.',
+    items: ['Cephe aydınlatması', 'Çizgisel LED', 'Gizli ışık', 'Vurgu aydınlatması'],
+    msg: 'Merhaba, mimari aydınlatma çözümleri hakkında bilgi almak istiyorum.',
   },
   {
     id: 'elektrik-malzemeleri',
@@ -99,7 +109,7 @@ const serviceSchema = {
 
 <Base
   title="Hizmetlerimiz: Avize, Aydınlatma ve Elektrik | İleri Elektrik Denizli"
-  description="Denizli’de avize, iç ve dış mekân aydınlatma, bahçe aydınlatması, elektrik malzemeleri ve elektrik taahhüt işleri. 1997’den beri Pamukkale Topraklık’ta."
+  description="Denizli’de avize, iç ve dış mekân aydınlatma, bahçe aydınlatması, mimari aydınlatma çözümleri, elektrik malzemeleri ve elektrik taahhüt işleri. 1997’den beri Pamukkale Topraklık’ta."
   ogImage={gorseller['ic-02'].src}
   schema={[serviceSchema]}
 >

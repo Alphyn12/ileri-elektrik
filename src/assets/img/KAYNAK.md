@@ -7,5 +7,6 @@ Mağazanın gerçek fotoğrafları gelince **aynı dosya adıyla** üzerine yaz�
 |---|---|
 | anahtar-priz.jpg | 1586943029669-98ae685c5c4c |
 | pano.jpg | 1576446470246-499c738d1c8e |
+| mimari.jpg | 1571440727633-ca6b05da2008 |
 
 Kaynak adresi: `https://unsplash.com/photos/<kimlik>` değil, `https://images.unsplash.com/photo-<kimlik>`.
