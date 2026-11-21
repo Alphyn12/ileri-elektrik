@@ -5,13 +5,21 @@ import { nav, wa, waMessages } from '../data/site';
 ---
 
 <Base title="Sayfa bulunamadı | İleri Elektrik" description="Aradığınız sayfa bulunamadı." noindex>
+  <script is:inline>
+    // Eski sitenin adresleri (index.php?icerik=..) yeni sayfalara yönlenir.
+    (function () {
+      var p = location.pathname.toLowerCase();
+      if (p !== '/index.php' && p !== '/index.php/') return;
+      var m = { '49': '/hakkimizda/', '50': '/hizmetlerimiz/', '76': '/hizmetlerimiz/', '89': '/hizmetlerimiz/', '52': '/iletisim/' };
+      location.replace(m[new URLSearchParams(location.search).get('icerik')] || '/');
+    })();
+  </script>
   <section class="nf">
     <div class="wrap">
       <p class="code" aria-hidden="true">404</p>
       <h1>Bu sayfanın ışığı yanmıyor.</h1>
       <p class="lede measure">Aradığınız sayfa taşınmış ya da hiç olmamış olabilir. Aşağıdaki sayfalardan devam edin ya da bize WhatsApp’tan yazın.</p>
       <ul>
-        <li><a href="/">Ana sayfa</a></li>
         {nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
       </ul>
       <a class="btn btn-copper" href={wa(waMessages.general)} target="_blank" rel="noopener" data-track="whatsapp-404">
