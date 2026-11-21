@@ -11,7 +11,7 @@ export const business = {
     { label: '0258 265 36 63', tel: '+902582653663' },
     { label: '0258 263 96 11', tel: '+902582639611' },
   ],
-  whatsapp: { label: '0542 411 01 64', number: '905424110164' },
+  whatsapp: { label: '0533 200 75 97', number: '905332007597' },
   address: {
     street: 'Topraklık Mah. 619. Sk. No:15',
     district: 'Pamukkale',
@@ -26,9 +26,8 @@ export const business = {
   mapEmbedUrl:
     'https://www.google.com/maps?q=%C4%B0leri+Elektrik,+Toprakl%C4%B1k,+619.+Sk.+No:15,+Pamukkale,+Denizli&z=17&output=embed',
   rating: { value: 4.8, count: 48 },
-  // TODO: Gün gün saatler işletmeden teyit edilecek. Google'da 08:00–18:00 görünüyor.
   hours: [
-    { days: 'Pazartesi – Cumartesi', open: '08:00', close: '18:00', schemaDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] },
+    { days: 'Pazartesi – Cumartesi', open: '08:00', close: '20:00', schemaDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] },
     { days: 'Pazar', open: null, close: null, schemaDays: [] },
   ],
 } as const;
