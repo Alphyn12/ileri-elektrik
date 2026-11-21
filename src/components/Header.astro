@@ -32,6 +32,9 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
         <a class="btn btn-wa" href={wa(waMessages.general)} target="_blank" rel="noopener" data-track="whatsapp-menu">
           <Icon name="whatsapp" /> WhatsApp’tan yazın
         </a>
+        <a class="btn btn-ig" href={business.instagram} target="_blank" rel="noopener" data-track="instagram-menu">
+          <Icon name="instagram" /> Instagram’da takip edin
+        </a>
         <a class="btn btn-line" href={`tel:${business.phones[0].tel}`}><Icon name="phone" /> {business.phones[0].label}</a>
       </div>
     </nav>
@@ -228,6 +231,10 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
     .menu-contact {
       display: grid;
       gap: 0.75rem;
+    }
+    .btn-ig {
+      background: linear-gradient(45deg, #f58529, #dd2a7b 45%, #8134af 75%, #515bd4);
+      color: #fff;
     }
     :global(html.menu-open) {
       overflow: hidden;
