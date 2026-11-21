@@ -10,6 +10,7 @@ const options = [
   { msg: waMessages.photo, t: 'Fotoğraf göndereceğim', d: 'Mekânınıza göre aydınlatma önerisi alın' },
   { msg: waMessages.teklif, t: 'Teklif istiyorum', d: 'Usta, müteahhit ve toplu alım' },
 ];
+const igHandle = '@' + business.instagram.split('/').filter(Boolean).pop();
 ---
 
 <Base
@@ -40,6 +41,16 @@ const options = [
           ))
         }
       </ul>
+
+      <a class="ig" href={business.instagram} target="_blank" rel="noopener" data-track="instagram-iletisim">
+        <span class="ig-icon"><Icon name="instagram" /></span>
+        <span class="ig-text">
+          <small>Instagram’da bizi takip edin</small>
+          <strong>{igHandle}</strong>
+          <span class="ig-note">Yeni gelen modeller ve uygulamalarımız</span>
+        </span>
+        <span class="ig-btn">Takip et</span>
+      </a>
 
       <div class="direct">
         <div>
@@ -107,6 +118,90 @@ const options = [
     margin-top: 0.15rem;
     color: var(--text-soft);
     font-size: 0.93rem;
+  }
+
+  /* Instagram kartı: marka renkli çerçeve ve simge, üzerine gelince parlar. */
+  .ig {
+    --ig: linear-gradient(45deg, #f58529, #dd2a7b 45%, #8134af 75%, #515bd4);
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 1.4rem;
+    margin-top: 1rem;
+    padding: 1.4rem 1.6rem;
+    border-radius: var(--radius);
+    background:
+      linear-gradient(var(--bg-raised), var(--bg-raised)) padding-box,
+      var(--ig) border-box;
+    border: 1px solid transparent;
+    text-decoration: none;
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+  }
+  .ig:hover {
+    box-shadow: 0 12px 34px -14px rgba(221, 42, 123, 0.65);
+    transform: translateY(-2px);
+  }
+  .ig-icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 3.6rem;
+    height: 3.6rem;
+    border-radius: 14px;
+    background: var(--ig);
+    color: #fff;
+  }
+  .ig-icon :global(svg) {
+    width: 1.9rem;
+    height: 1.9rem;
+  }
+  .ig-text {
+    display: grid;
+    gap: 0.1rem;
+    margin-right: auto;
+  }
+  .ig-text small {
+    color: var(--text-soft);
+    font-size: 0.9rem;
+  }
+  .ig-text strong {
+    font: 600 clamp(1.5rem, 1.1rem + 1.6vw, 2.1rem) / 1.1 var(--font-display);
+    font-stretch: 80%;
+    letter-spacing: 0.01em;
+    color: var(--text);
+  }
+  .ig-note {
+    color: var(--text-soft);
+    font-size: 0.93rem;
+  }
+  .ig-btn {
+    flex: none;
+    padding: 0.75em 1.5em;
+    border-radius: var(--radius);
+    background: var(--ig);
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  @media (max-width: 560px) {
+    .ig {
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding: 1.2rem;
+    }
+    .ig-icon {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 12px;
+    }
+    .ig-text {
+      flex: 1 1 0;
+      min-width: 0;
+    }
+    .ig-btn {
+      width: 100%;
+      text-align: center;
+    }
   }
 
   .direct {
