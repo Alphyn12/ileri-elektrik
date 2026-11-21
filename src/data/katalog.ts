@@ -9,7 +9,7 @@ const img = (name: string): ImageMetadata => {
   return f;
 };
 
-export type Kategori = 'avize' | 'ic' | 'dis';
+export type Kategori = 'avize' | 'ic' | 'dis' | 'ele';
 
 export interface KatalogGorsel {
   src: ImageMetadata;
@@ -38,6 +38,12 @@ export const gorseller = {
   'dis-16': g('dis-16', 'ic', 'Duvarda ışık desenleri oluşturan modern aplikler'),
   'dis-17': g('dis-17', 'dis', 'Tuğla duvara sıcak ışık veren aplik'),
   'dis-18': g('dis-18', 'dis', 'Çimenlikte yanan küre bahçe armatürleri'),
+  'ele-01': g('ele-01', 'ele', 'Elektrik panosunda sıra sıra otomatik sigortalar'),
+  'ele-02': g('ele-02', 'ele', 'Birbirine sarılmış gri elektrik kabloları'),
+  'ele-03': g('ele-03', 'ele', 'Duvarda mat siyah topraklı priz'),
+  'ele-04': g('ele-04', 'ele', 'Topraklı prize takılı iki siyah fiş'),
+  'ele-05': g('ele-05', 'ele', 'Rulo hâlinde sarılmış elektrik kabloları'),
+  'ele-06': g('ele-06', 'ele', 'Sigortalar ve kablolarla döşenmiş elektrik panosu'),
   'ic-01': g('ic-01', 'ic', 'Kaymaktaşı görünümlü yanan duvar apliği'),
   'ic-02': g('ic-02', 'avize', 'Pirinç gövdeli, yanan kristal avize'),
   'ic-03': g('ic-03', 'avize', 'Salonda yanan büyük kristal avizeler'),
@@ -66,5 +72,6 @@ export const slaytlar: { baslik: string; duzen: 'a' | 'b'; gorseller: GorselAdi[
   { baslik: 'Avize', duzen: 'b', gorseller: ['ic-04', 'ic-02', 'ic-06', 'ic-03', 'ic-05', 'ic-07'] },
   { baslik: 'Bahçe ve peyzaj aydınlatması', duzen: 'a', gorseller: ['dis-13', 'dis-11', 'dis-08', 'dis-10', 'dis-12', 'dis-18'] },
   { baslik: 'İç mekân aydınlatma', duzen: 'b', gorseller: ['ic-14', 'ic-10', 'ic-01', 'ic-12', 'ic-09', 'ic-08'] },
+  { baslik: 'Elektrik malzemeleri', duzen: 'a', gorseller: ['ele-01', 'ele-06', 'ele-03', 'ele-04', 'ele-05', 'ele-02'] },
 ];
 

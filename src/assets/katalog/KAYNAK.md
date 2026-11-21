@@ -36,5 +36,11 @@ Bütün görseller Unsplash'tan (Unsplash Lisansı: ticari kullanım serbest, at
 | ic-12.jpg | 1770085140346-9a2cfca85178 |
 | ic-13.jpg | 1570005616859-784c0e1644c5 |
 | ic-14.jpg | 1768836180167-6d4a25c421b2 |
+| ele-01.jpg | 1576446468729-7674e99608f5 |
+| ele-02.jpg | 1518181835702-6eef8b4b2113 |
+| ele-03.jpg | 1786151883469-80c3afc17900 |
+| ele-04.jpg | 1762330464388-de535963b42e |
+| ele-05.jpg | 1607631755187-298a3f9a640a |
+| ele-06.jpg | 1544724569-5f546fd6f2b5 |
 
 Adres: `https://images.unsplash.com/photo-<kimlik>`
