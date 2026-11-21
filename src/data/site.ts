@@ -8,6 +8,7 @@ export const business = {
   url: 'https://www.ilerielektrik.com.tr',
   email: 'info@ilerielektrik.com.tr',
   phones: [
+    { label: '0533 200 75 97', tel: '+905332007597' },
     { label: '0258 265 36 63', tel: '+902582653663' },
     { label: '0258 263 96 11', tel: '+902582639611' },
   ],

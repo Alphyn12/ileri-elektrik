@@ -84,16 +84,9 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
     backdrop-filter: none;
     border-bottom: 0;
   }
-  /* İnce dokunuş: anasayfada logodaki çizgi kendini çizerek açılır. */
-  .overlay :global(.mark .line) {
-    stroke-dasharray: 1;
-    stroke-dashoffset: 1;
-    animation: draw 1.9s 0.35s cubic-bezier(0.6, 0, 0.3, 1) forwards;
-  }
-  @keyframes draw {
-    to {
-      stroke-dashoffset: 0;
-    }
+  /* Anasayfada büyük logo slaytın ortasında durduğu için küçük logo gizlenir (menü açıkken görünür). */
+  .overlay:not(.is-open) .home {
+    visibility: hidden;
   }
   .bar {
     display: flex;

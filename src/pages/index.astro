@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
+import LogoMark from '../components/LogoMark.astro';
 import { business, fullAddress, wa, waMessages } from '../data/site';
 import { gorseller, slaytlar } from '../data/katalog';
 
@@ -51,8 +52,14 @@ const wide = (duzen: 'a' | 'b', k: number) => (duzen === 'a' ? k === 5 : k === 3
     <div class="shade" aria-hidden="true"></div>
 
     <div class="center">
-      <p class="kicker">Denizli’de {business.founded}’den beri</p>
-      <h1>Avize &amp; Aydınlatma</h1>
+      <p class="kicker" lang="en">Since {business.founded}</p>
+      <h1 class="lockup">
+        <LogoMark class="hero-mark" />
+        <span class="words">
+          <span class="name">İleri Elektrik</span>{' '}
+          <span class="sub">&amp; Aydınlatma</span>
+        </span>
+      </h1>
       <div class="actions">
         <a class="btn btn-copper" href="/hizmetlerimiz/">Hizmetlerimiz</a>
         <a class="btn btn-line" href={wa(waMessages.general)} target="_blank" rel="noopener" data-track="whatsapp-anasayfa">
@@ -244,16 +251,57 @@ const wide = (duzen: 'a' | 'b', k: number) => (duzen === 'a' ? k === 5 : k === 3
     color: var(--copper-light);
     padding-left: 0.42em; /* harf aralığı yüzünden kayan ortalamayı düzeltir */
   }
-  h1 {
-    margin-top: 1rem;
-    font-size: clamp(2.9rem, 1.2rem + 7vw, 8rem);
+  /* Başlık: logonun büyük hâli. Bakır işaret + iki satırlık marka adı. */
+  .lockup {
+    --h: clamp(5.5rem, 3rem + 7vw, 10.5rem);
+    display: flex;
+    align-items: center;
+    gap: clamp(1rem, 0.5rem + 1.6vw, 2rem);
+    margin-top: 1.4rem;
+    text-align: left;
+    line-height: 1;
+  }
+  .lockup :global(.hero-mark) {
+    flex: none;
+    width: var(--h);
+    height: var(--h);
+    box-shadow: 0 18px 50px -20px rgba(0, 0, 0, 0.8);
+  }
+  /* İnce dokunuş: logodaki çizgi açılışta kendini çizer. */
+  .lockup :global(.hero-mark .line) {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: ciz 1.9s 0.35s cubic-bezier(0.6, 0, 0.3, 1) forwards;
+  }
+  @keyframes ciz {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  .lockup .words {
+    display: grid;
+    gap: calc(var(--h) * 0.1);
+  }
+  .lockup .name {
+    font-family: var(--font-display);
+    font-size: calc(var(--h) * 0.62);
     font-weight: 600;
     font-stretch: 72%;
-    line-height: 0.92;
+    line-height: 0.86;
     letter-spacing: 0.015em;
     text-transform: uppercase;
     color: var(--text);
     text-shadow: 0 2px 30px rgba(0, 0, 0, 0.5);
+    white-space: nowrap;
+  }
+  .lockup .sub {
+    font-family: var(--font-body);
+    font-size: calc(var(--h) * 0.15);
+    font-weight: 500;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    color: var(--copper-light);
+    white-space: nowrap;
   }
   .actions {
     display: flex;
@@ -408,8 +456,19 @@ const wide = (duzen: 'a' | 'b', k: number) => (duzen === 'a' ? k === 5 : k === 3
       font-size: 0.72rem;
       letter-spacing: 0.3em;
     }
-    h1 {
-      font-size: min(15vw, 4.6rem);
+    .lockup {
+      --h: min(19vw, 5.4rem);
+      flex-direction: column;
+      text-align: center;
+      gap: 1.1rem;
+    }
+    .lockup .name {
+      font-size: min(13.5vw, 3.6rem);
+    }
+    .lockup .sub {
+      font-size: min(3.6vw, 0.95rem);
+      letter-spacing: 0.36em;
+      padding-left: 0.36em;
     }
     .actions {
       display: grid;
