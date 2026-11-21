@@ -1,0 +1,240 @@
+---
+import Icon from './Icon.astro';
+import { business, reviews } from '../data/site';
+
+interface Props {
+  heading?: string;
+}
+const { heading = 'Müşterilerimiz ne diyor?' } = Astro.props;
+
+// Kartlar iki sıraya bölünür; sıralar ters yönlere, sonsuz döngüyle kayar.
+const rows = [reviews.filter((_, i) => i % 2 === 0), reviews.filter((_, i) => i % 2 === 1)];
+---
+
+<section class="section reviews" aria-labelledby="yorumlar">
+  <div class="wrap head">
+    <h2 id="yorumlar">{heading}</h2>
+    <a class="score" href={business.googleMapsUrl} target="_blank" rel="noopener">
+      <span class="num">{String(business.rating.value).replace('.', ',')}</span>
+      <span class="meta">
+        <span class="stars" aria-hidden="true">
+          <Icon name="star" /><Icon name="star" /><Icon name="star" /><Icon name="star" /><Icon name="star" />
+        </span>
+        <span>Google’da {business.rating.count} yorum</span>
+        <span class="go">Tüm yorumları Google’da okuyun</span>
+      </span>
+    </a>
+  </div>
+
+  <div class="rows">
+    {
+      rows.map((row, k) => (
+        <div class:list={['row', { reverse: k === 1 }]} style={`--dur:${row.length * 9}s`}>
+          {/* İkinci kopya döngüyü kesintisiz yapar; ekran okuyucudan gizlenir. */}
+          {[0, 1].map((copy) => (
+            <ul class="track" aria-hidden={copy === 1 ? 'true' : undefined}>
+              {row.map((r) => (
+                <li>
+                  <figure class:list={['card', { short: r.text.length < 70 }]}>
+                    <span class="mark" aria-hidden="true">“</span>
+                    <blockquote>
+                      <p>{r.text}</p>
+                    </blockquote>
+                    <figcaption>
+                      <span class="who">{r.name}</span>
+                      <span class="src">
+                        <span class="mini-stars" role="img" aria-label="5 üzerinden 5 yıldız">
+                          <Icon name="star" /><Icon name="star" /><Icon name="star" /><Icon name="star" /><Icon name="star" />
+                        </span>
+                        Google yorumu
+                      </span>
+                    </figcaption>
+                  </figure>
+                </li>
+              ))}
+            </ul>
+          ))}
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .score {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    text-decoration: none;
+  }
+  .num {
+    font: 700 3.4rem/1 var(--font-display);
+    font-stretch: 75%;
+  }
+  .meta {
+    display: grid;
+    gap: 0.1rem;
+    font-size: 0.95rem;
+  }
+  .stars,
+  .mini-stars {
+    display: inline-flex;
+    color: #e39b1f;
+  }
+  .stars :global(svg) {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+  .go {
+    color: var(--copper-light);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  /* Kayan şerit: kenarlarda yumuşak kararma, üzerine gelince durur. */
+  .rows {
+    display: grid;
+    gap: 1.25rem;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  }
+  .row {
+    display: flex;
+    width: max-content;
+  }
+  .track {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    animation: kay var(--dur) linear infinite;
+  }
+  .reverse .track {
+    animation-direction: reverse;
+  }
+  .rows:hover .track {
+    animation-play-state: paused;
+  }
+  @keyframes kay {
+    to {
+      transform: translateX(-100%);
+    }
+  }
+  .track li {
+    display: flex;
+    padding-right: 1.25rem;
+  }
+
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 23rem;
+    margin: 0;
+    padding: 1.6rem 1.6rem 1.35rem;
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    transition: border-color 0.3s ease;
+  }
+  .card:hover {
+    border-color: rgba(195, 131, 79, 0.55);
+  }
+  .mark {
+    position: absolute;
+    top: 0.35rem;
+    right: 1.1rem;
+    font: 700 4.2rem/1 var(--font-display);
+    color: var(--copper);
+    opacity: 0.35;
+  }
+  blockquote {
+    margin: 0 0 1.25rem;
+    flex: 1;
+  }
+  .card p {
+    color: var(--text);
+    font-size: 0.98rem;
+    line-height: 1.6;
+    padding-right: 1.5rem;
+  }
+  /* Kısa yorumlar büyük yazıyla öne çıkar, kart boş görünmez. */
+  .short p {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 500;
+    font-stretch: 82%;
+    line-height: 1.2;
+    color: var(--text);
+  }
+  figcaption {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.4rem 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.88rem;
+  }
+  .who {
+    font-weight: 600;
+    color: var(--copper-light);
+    letter-spacing: 0.02em;
+  }
+  .src {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-soft);
+  }
+  .mini-stars :global(svg) {
+    width: 0.8rem;
+    height: 0.8rem;
+  }
+
+  @media (max-width: 720px) {
+    .card {
+      width: 17.5rem;
+      padding: 1.3rem 1.3rem 1.1rem;
+    }
+    .card p {
+      font-size: 0.94rem;
+    }
+    .short p {
+      font-size: 1.45rem;
+    }
+  }
+
+  /* Hareket azaltma tercihinde şerit durur, elle kaydırılır. */
+  @media (prefers-reduced-motion: reduce) {
+    .rows {
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+    .row {
+      width: auto;
+      overflow-x: auto;
+      padding-inline: var(--gutter);
+      scroll-snap-type: x mandatory;
+    }
+    .track {
+      animation: none;
+    }
+    .track[aria-hidden='true'] {
+      display: none;
+    }
+    .track li {
+      scroll-snap-align: start;
+    }
+  }
+</style>

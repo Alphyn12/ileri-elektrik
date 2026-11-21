@@ -1,0 +1,81 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { business, fullAddress } from '../data/site';
+
+// TODO: İşletmenin resmi ticari unvanı ve (varsa) VERBİS bilgisi eklenmeli; metin bir hukukçuya kontrol ettirilmeli.
+const unvan = 'İleri Elektrik';
+const updated = '13 Kasım 2026';
+---
+
+<Base
+  title="KVKK Aydınlatma Metni | İleri Elektrik"
+  description="İleri Elektrik kişisel verilerin korunması aydınlatma metni: hangi verileri, hangi amaçla işlediğimiz ve haklarınız."
+>
+  <PageHeader
+    title="KVKK aydınlatma metni"
+    lede={`Son güncelleme: ${updated}`}
+    crumbs={[{ href: '/kvkk/', label: 'KVKK aydınlatma metni' }]}
+  />
+
+  <section class="section">
+    <div class="wrap prose">
+      <p>
+        6698 sayılı Kişisel Verilerin Korunması Kanunu (“KVKK”) uyarınca veri sorumlusu sıfatıyla {unvan} ({fullAddress})
+        olarak kişisel verilerinizi aşağıda açıklanan şekilde işliyoruz.
+      </p>
+
+      <h2>Hangi verileri işliyoruz?</h2>
+      <ul>
+        <li>WhatsApp, telefon ya da e-posta ile bize ulaştığınızda paylaştığınız ad, soyad, telefon numarası ve mesaj içeriği</li>
+        <li>Ürün seçimi için gönderdiğiniz fotoğraflar</li>
+        <li>Teslimat için paylaştığınız adres bilgisi</li>
+        <li>Fatura için gerekli kimlik ve vergi bilgileri</li>
+      </ul>
+      <p>Bu web sitesinde form bulunmaz; site, siz bize kendiliğinizden yazmadığınız sürece kişisel veri toplamaz.</p>
+
+      <h2>Hangi amaçla işliyoruz?</h2>
+      <ul>
+        <li>Sorularınızı yanıtlamak, fiyat ve teklif iletmek</li>
+        <li>Teslimat planlamak</li>
+        <li>Satış, fatura ve garanti işlemlerini yürütmek</li>
+        <li>Yasal yükümlülüklerimizi yerine getirmek</li>
+      </ul>
+
+      <h2>Hukuki sebep</h2>
+      <p>
+        Verileriniz KVKK’nın 5. maddesinde yer alan; bir sözleşmenin kurulması veya ifasıyla doğrudan ilgili olması, hukuki
+        yükümlülüğümüzü yerine getirebilmemiz ve meşru menfaatimiz için zorunlu olması sebeplerine dayanılarak işlenir.
+      </p>
+
+      <h2>Kimlerle paylaşıyoruz?</h2>
+      <p>
+        Verileriniz yalnızca yasal zorunluluk hâlinde yetkili kamu kurumlarıyla ve muhasebe hizmeti aldığımız kişilerle
+        paylaşılır. WhatsApp üzerinden yürüttüğünüz yazışmalar WhatsApp’ın kendi gizlilik koşullarına tabidir.
+      </p>
+
+      <h2>Harita ve üçüncü taraf içerikler</h2>
+      <p>
+        Konum bölümünde gösterilen harita Google Haritalar tarafından sağlanır. Harita yüklendiğinde Google, kendi gizlilik
+        politikası kapsamında veri işleyebilir.
+      </p>
+
+      <h2>Haklarınız</h2>
+      <p>KVKK’nın 11. maddesi uyarınca; kişisel verilerinizin işlenip işlenmediğini öğrenme, işlenmişse bilgi talep etme, işlenme amacını öğrenme, yanlış işlenmişse düzeltilmesini, silinmesini veya yok edilmesini isteme ve kanunda sayılan diğer haklara sahipsiniz.</p>
+      <p>
+        Başvurularınızı <a href={`mailto:${business.email}`}>{business.email}</a> adresine e-posta ile ya da yukarıdaki adresimize
+        yazılı olarak iletebilirsiniz.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .prose p,
+  .prose li {
+    color: var(--text-soft);
+  }
+  .prose a {
+    color: var(--copper-light);
+  }
+</style>

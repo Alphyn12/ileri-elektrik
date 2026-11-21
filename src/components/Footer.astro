@@ -1,0 +1,148 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { business, fullAddress, nav, wa, waMessages } from '../data/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="wrap grid">
+    <div class="brand">
+      <Logo />
+      <p>Denizli’de avize, aydınlatma ve elektrik malzemesi. {business.founded}’den beri Topraklık’ta.</p>
+      <div class="social">
+        <a href={business.instagram} target="_blank" rel="noopener" aria-label="Instagram"><Icon name="instagram" /></a>
+        <a href={wa(waMessages.general)} target="_blank" rel="noopener" aria-label="WhatsApp" data-track="whatsapp-footer-ikon"><Icon name="whatsapp" /></a>
+        <a href={business.googleMapsUrl} target="_blank" rel="noopener" aria-label="Google Haritalar"><Icon name="pin" /></a>
+      </div>
+    </div>
+
+    <div>
+      <h2 class="h">Adres</h2>
+      <address>
+        {fullAddress}<br />
+        <a href={business.directionsUrl} target="_blank" rel="noopener">Yol tarifi al</a>
+      </address>
+    </div>
+
+    <div>
+      <h2 class="h">İletişim</h2>
+      <ul>
+        <li><a href={wa(waMessages.general)} target="_blank" rel="noopener" data-track="whatsapp-footer">WhatsApp: {business.whatsapp.label}</a></li>
+        {business.phones.map((p) => <li><a href={`tel:${p.tel}`}>{p.label}</a></li>)}
+        <li><a href={`mailto:${business.email}`}>{business.email}</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="h">Çalışma saatleri</h2>
+      <ul>
+        {business.hours.map((h) => <li>{h.days}: {h.open ? `${h.open}–${h.close}` : 'Kapalı'}</li>)}
+      </ul>
+    </div>
+  </div>
+
+  <div class="wrap bottom">
+    <ul class="links">
+      {nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+      <li><a href="/kvkk/">KVKK aydınlatma metni</a></li>
+    </ul>
+    <p class="fine">© {year} {business.brand}. Sitedeki görseller temsilidir.</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    padding-block: 4.5rem 2rem;
+    background: var(--bg-deep);
+    border-top: 1px solid var(--line);
+    font-size: 0.97rem;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 2.5rem;
+  }
+  .brand p {
+    margin-top: 1.25rem;
+    max-width: 26em;
+    color: var(--text-soft);
+  }
+  .social {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+  }
+  .social a {
+    display: grid;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px var(--line);
+    color: var(--text);
+  }
+  .social a:hover {
+    color: var(--copper-light);
+    box-shadow: inset 0 0 0 1px var(--copper);
+  }
+  .social :global(svg) {
+    width: 1.15rem;
+    height: 1.15rem;
+  }
+  .h {
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-stretch: 100%;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 0.9rem;
+    color: var(--copper-light);
+  }
+  address {
+    font-style: normal;
+    color: var(--text-soft);
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.35rem;
+    color: var(--text-soft);
+  }
+  a {
+    color: var(--text);
+    text-underline-offset: 0.2em;
+  }
+  .bottom {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+    display: grid;
+    gap: 1rem;
+  }
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.4rem;
+  }
+  .fine {
+    color: var(--text-soft);
+    font-size: var(--step--1);
+  }
+  @media (max-width: 860px) {
+    .grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .brand {
+      grid-column: 1 / -1;
+    }
+  }
+  @media (max-width: 520px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

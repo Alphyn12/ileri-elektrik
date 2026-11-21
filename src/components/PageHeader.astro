@@ -1,0 +1,179 @@
+---
+import { Image } from 'astro:assets';
+import Meander from './Meander.astro';
+
+interface Props {
+  title: string;
+  lede?: string;
+  crumbs: { href: string; label: string }[];
+  /** Başlığın altında katalog sayfası gibi dizilen görseller (3 ya da 4 tane). */
+  images?: { src: ImageMetadata; alt: string }[];
+}
+const { title, lede, crumbs, images = [] } = Astro.props;
+const site = Astro.site!;
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [{ href: '/', label: 'Ana sayfa' }, ...crumbs].map((c, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: c.label,
+    item: new URL(c.href, site).href,
+  })),
+};
+---
+
+<header class="page-head">
+  <div class="wrap">
+    <nav aria-label="Konumunuz" class="crumbs">
+      <ol>
+        <li><a href="/">Ana sayfa</a></li>
+        {
+          crumbs.map((c, i) => (
+            <li>{i === crumbs.length - 1 ? <span aria-current="page">{c.label}</span> : <a href={c.href}>{c.label}</a>}</li>
+          ))
+        }
+      </ol>
+    </nav>
+    <div class="title">
+      <h1>{title}</h1>
+      {(lede || Astro.slots.has('default')) && (
+        <div class="side">
+          <Meander />
+          {lede && <p class="lede">{lede}</p>}
+          <div class="actions"><slot /></div>
+        </div>
+      )}
+    </div>
+  </div>
+
+  {
+    images.length > 0 && (
+      <div class:list={['strip', `n${images.length}`]}>
+        {images.map((im, k) => (
+          <div class="cell">
+            <Image src={im.src} alt={im.alt} widths={[420, 720, 1000]} sizes={`(max-width: 720px) 50vw, ${Math.round(100 / images.length)}vw`} loading={k < 2 ? 'eager' : 'lazy'} />
+          </div>
+        ))}
+      </div>
+    )
+  }
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+</header>
+
+<style>
+  .page-head {
+    padding-top: clamp(2rem, 1rem + 3vw, 3.5rem);
+    border-bottom: 1px solid var(--line);
+  }
+  .page-head:not(:has(.strip)) {
+    padding-bottom: clamp(2.5rem, 1rem + 4vw, 4.5rem);
+  }
+  .crumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0 0 clamp(2rem, 1rem + 3vw, 3.5rem);
+    padding: 0;
+    list-style: none;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+  }
+  .crumbs li + li::before {
+    content: '';
+    display: inline-block;
+    width: 1rem;
+    height: 1px;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+    background: var(--copper);
+  }
+  .crumbs a {
+    color: var(--text-soft);
+    text-decoration: none;
+  }
+  .crumbs a:hover {
+    color: var(--copper-light);
+  }
+  .crumbs [aria-current] {
+    color: var(--text);
+  }
+  .title {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 1.5rem clamp(2rem, 1rem + 5vw, 6rem);
+    align-items: end;
+  }
+  h1 {
+    font-size: var(--step-4);
+    font-weight: 600;
+    font-stretch: 72%;
+    line-height: 0.95;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+  }
+  .side {
+    display: grid;
+    gap: 1.1rem;
+    padding-bottom: 0.4rem;
+  }
+  .lede {
+    font-size: 1.12rem;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.4rem;
+  }
+  .actions:empty {
+    display: none;
+  }
+
+  /* Katalog sayfası gibi koyu aralıklı görsel şeridi */
+  .strip {
+    display: grid;
+    gap: 6px;
+    padding: 6px;
+    margin-top: clamp(2.5rem, 1rem + 4vw, 4.5rem);
+    background: var(--bg-deep);
+    height: clamp(13rem, 8rem + 16vw, 24rem);
+  }
+  .strip.n3 {
+    grid-template-columns: 1.3fr 0.8fr 1fr;
+  }
+  .strip.n4 {
+    grid-template-columns: 1fr 0.75fr 1.25fr 0.85fr;
+  }
+  .cell {
+    overflow: hidden;
+    min-height: 0;
+  }
+  .cell :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  @media (max-width: 860px) {
+    .title {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 720px) {
+    .strip {
+      gap: 4px;
+      padding: 4px;
+      height: 11rem;
+    }
+    .strip.n3,
+    .strip.n4 {
+      grid-template-columns: 1.2fr 1fr;
+    }
+    .cell:nth-child(n + 3) {
+      display: none;
+    }
+  }
+</style>

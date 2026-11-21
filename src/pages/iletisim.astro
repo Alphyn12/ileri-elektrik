@@ -1,0 +1,137 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Icon from '../components/Icon.astro';
+import Location from '../components/Location.astro';
+import { business, wa, waMessages } from '../data/site';
+
+const options = [
+  { msg: waMessages.general, t: 'Bilgi almak istiyorum', d: 'Ürün, fiyat ya da stok sorusu' },
+  { msg: waMessages.photo, t: 'Fotoğraf göndereceğim', d: 'Mekânınıza göre aydınlatma önerisi alın' },
+  { msg: waMessages.teklif, t: 'Teklif istiyorum', d: 'Usta, müteahhit ve toplu alım' },
+];
+---
+
+<Base
+  title="İletişim: Adres, Telefon ve WhatsApp | İleri Elektrik Denizli"
+  description="İleri Elektrik iletişim bilgileri: Topraklık Mah. 619. Sk. No:15 Pamukkale/Denizli. WhatsApp 0542 411 01 64, telefon 0258 265 36 63. Çalışma saatleri ve yol tarifi."
+>
+  <PageHeader
+    title="Bize ulaşın"
+    lede="En hızlı yol WhatsApp. Aşağıdan konunuzu seçin, mesajınız hazır yazılı açılsın; sadece göndermeniz yeterli."
+    crumbs={[{ href: '/iletisim/', label: 'İletişim' }]}
+  />
+
+  <section class="section" aria-labelledby="whatsapp-konu">
+    <div class="wrap">
+      <h2 id="whatsapp-konu" class="visually-hidden">WhatsApp’tan konunuzu seçin</h2>
+      <ul class="options">
+        {
+          options.map((o, i) => (
+            <li>
+              <a href={wa(o.msg)} target="_blank" rel="noopener" data-track={`whatsapp-iletisim-${i + 1}`}>
+                <Icon name="whatsapp" />
+                <span>
+                  <strong>{o.t}</strong>
+                  <small>{o.d}</small>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="direct">
+        <div>
+          <h3>WhatsApp</h3>
+          <a href={wa(waMessages.general)} target="_blank" rel="noopener">{business.whatsapp.label}</a>
+        </div>
+        <div>
+          <h3>Telefon</h3>
+          {business.phones.map((p) => <a href={`tel:${p.tel}`}>{p.label}</a>)}
+        </div>
+        <div>
+          <h3>E-posta</h3>
+          <a href={`mailto:${business.email}`}>{business.email}</a>
+        </div>
+        <div>
+          <h3>Mağazada</h3>
+          <p>Nakit, kredi kartı, banka kartı ve temassız ödeme.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Location />
+</Base>
+
+<style>
+  .options {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1rem;
+  }
+  .options a {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    height: 100%;
+    padding: 1.25rem 1.4rem;
+    border-radius: var(--radius);
+    background: var(--bg-raised);
+    box-shadow: inset 0 0 0 1px var(--line);
+    text-decoration: none;
+    transition: box-shadow 0.15s ease;
+  }
+  .options a:hover {
+    box-shadow: inset 0 0 0 2px var(--wa-green), 0 8px 24px -12px rgba(37, 211, 102, 0.6);
+  }
+  .options :global(svg) {
+    flex: none;
+    width: 2.6rem;
+    height: 2.6rem;
+    padding: 0.5rem;
+    border-radius: 50%;
+    background: var(--wa-green);
+    color: #fff;
+  }
+  .options strong {
+    display: block;
+    font-size: 1.08rem;
+  }
+  .options small {
+    display: block;
+    margin-top: 0.15rem;
+    color: var(--text-soft);
+    font-size: 0.93rem;
+  }
+
+  .direct {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: 2rem 2.5rem;
+    margin-top: 3.5rem;
+  }
+  .direct > div {
+    padding-top: 1rem;
+    border-top: 1px solid var(--copper);
+    display: grid;
+    align-content: start;
+    gap: 0.3rem;
+  }
+  .direct h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.3rem;
+  }
+  .direct a {
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-underline-offset: 0.2em;
+  }
+  .direct p {
+    color: var(--text-soft);
+  }
+</style>

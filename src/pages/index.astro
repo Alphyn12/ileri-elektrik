@@ -1,0 +1,419 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { business, fullAddress, wa, waMessages } from '../data/site';
+import { gorseller, slaytlar } from '../data/katalog';
+
+const pad = (n: number) => String(n).padStart(2, '0');
+// Her düzende geniş kutu: a düzeninde 6., b düzeninde 4. görsel.
+const wide = (duzen: 'a' | 'b', k: number) => (duzen === 'a' ? k === 5 : k === 3);
+---
+
+<Base
+  title="İleri Elektrik & Aydınlatma | Denizli Avize ve Aydınlatma"
+  description="Denizli Pamukkale’de 1997’den beri avize, iç ve dış mekân aydınlatma, elektrik malzemesi ve elektrik taahhüt işleri. WhatsApp: 0542 411 01 64."
+  home
+>
+  <section class="hero" aria-roledescription="carousel" aria-label="Aydınlatma kataloğu">
+    <div class="slides" id="slaytlar">
+      {
+        slaytlar.map((s, i) => (
+          <div
+            class:list={['slide', `duzen-${s.duzen}`]}
+            data-baslik={s.baslik}
+            data-active={i === 0 ? '' : undefined}
+            aria-hidden={i === 0 ? undefined : 'true'}
+            role="group"
+            aria-roledescription="slayt"
+            aria-label={`${i + 1} / ${slaytlar.length}: ${s.baslik}`}
+          >
+            {s.gorseller.map((name, k) => {
+              const p = gorseller[name];
+              return (
+                <div class={`c c${k + 1}`}>
+                  <Image
+                    src={p.src}
+                    alt={p.alt}
+                    widths={wide(s.duzen, k) ? [640, 960, 1400] : [400, 640, 900]}
+                    sizes={wide(s.duzen, k) ? '(max-width: 720px) 100vw, 50vw' : '(max-width: 720px) 50vw, 26vw'}
+                    loading={i === 0 ? 'eager' : 'lazy'}
+                    fetchpriority={i === 0 && k === 2 ? 'high' : undefined}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="shade" aria-hidden="true"></div>
+
+    <div class="center">
+      <p class="kicker">Denizli’de {business.founded}’den beri</p>
+      <h1>Avize &amp; Aydınlatma</h1>
+      <div class="actions">
+        <a class="btn btn-copper" href="/hizmetlerimiz/">Hizmetlerimiz</a>
+        <a class="btn btn-line" href={wa(waMessages.general)} target="_blank" rel="noopener" data-track="whatsapp-anasayfa">
+          <Icon name="whatsapp" /> WhatsApp’tan yazın
+        </a>
+      </div>
+    </div>
+
+    <div class="foot">
+      <div class="social">
+        <a href={business.instagram} target="_blank" rel="noopener" aria-label="Instagram"><Icon name="instagram" /></a>
+        <a href={wa(waMessages.general)} target="_blank" rel="noopener" aria-label="WhatsApp" data-track="whatsapp-anasayfa-ikon"><Icon name="whatsapp" /></a>
+        <a href={business.googleMapsUrl} target="_blank" rel="noopener" aria-label="Google Haritalar’da konumumuz"><Icon name="pin" /></a>
+      </div>
+
+      <p class="addr">
+        {fullAddress}<span class="sep" aria-hidden="true"></span><a href={`tel:${business.phones[0].tel}`}>{business.phones[0].label}</a>
+      </p>
+
+      <div class="ctrl">
+        <p class="cap" aria-live="polite"><span class="count">01 / {pad(slaytlar.length)}</span> <span class="name">{slaytlar[0].baslik}</span></p>
+        <button type="button" class="prev" aria-controls="slaytlar" aria-label="Önceki slayt"><Icon name="prev" /></button>
+        <button type="button" class="toggle" aria-controls="slaytlar" aria-label="Slaytı durdur">
+          <Icon name="pause" class="i-pause" /><Icon name="play" class="i-play" />
+        </button>
+        <button type="button" class="next" aria-controls="slaytlar" aria-label="Sonraki slayt"><Icon name="next" /></button>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const hero = document.querySelector<HTMLElement>('.hero');
+  const slides = [...document.querySelectorAll<HTMLElement>('.slide')];
+  if (hero && slides.length > 1) {
+    const count = hero.querySelector('.count')!;
+    const name = hero.querySelector('.name')!;
+    const toggle = hero.querySelector<HTMLButtonElement>('.toggle')!;
+    const total = String(slides.length).padStart(2, '0');
+    const DELAY = 6500;
+    let i = 0;
+    let timer: number | undefined;
+    // Hareket azaltma tercih edilmişse slayt kendiliğinden dönmez.
+    let playing = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const show = (n: number) => {
+      i = (n + slides.length) % slides.length;
+      slides.forEach((s, k) => {
+        const on = k === i;
+        s.toggleAttribute('data-active', on);
+        if (on) s.removeAttribute('aria-hidden');
+        else s.setAttribute('aria-hidden', 'true');
+      });
+      count.textContent = `${String(i + 1).padStart(2, '0')} / ${total}`;
+      name.textContent = slides[i].dataset.baslik ?? '';
+    };
+    const schedule = () => {
+      clearInterval(timer);
+      if (playing) timer = window.setInterval(() => show(i + 1), DELAY);
+    };
+    const setPlaying = (p: boolean) => {
+      playing = p;
+      hero.classList.toggle('paused', !p);
+      toggle.setAttribute('aria-label', p ? 'Slaytı durdur' : 'Slaytı başlat');
+      schedule();
+    };
+
+    hero.querySelector('.prev')!.addEventListener('click', () => (show(i - 1), schedule()));
+    hero.querySelector('.next')!.addEventListener('click', () => (show(i + 1), schedule()));
+    toggle.addEventListener('click', () => setPlaying(!playing));
+
+    // Telefonda parmakla kaydırma
+    let x0: number | null = null;
+    hero.addEventListener('touchstart', (e) => (x0 = e.touches[0].clientX), { passive: true });
+    hero.addEventListener('touchend', (e) => {
+      if (x0 === null) return;
+      const dx = e.changedTouches[0].clientX - x0;
+      if (Math.abs(dx) > 50) {
+        show(dx < 0 ? i + 1 : i - 1);
+        schedule();
+      }
+      x0 = null;
+    });
+
+    document.addEventListener('visibilitychange', () => (document.hidden ? clearInterval(timer) : schedule()));
+    setPlaying(playing);
+  }
+</script>
+
+<style>
+  .hero {
+    position: relative;
+    height: 100svh;
+    min-height: 34rem;
+    overflow: hidden;
+    background: var(--bg-deep);
+    isolation: isolate;
+  }
+
+  /* ---------- Kolaj slaytlar ---------- */
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    gap: 6px;
+    padding: 6px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1.4s ease, visibility 0s linear 1.4s;
+  }
+  .slide[data-active] {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 1.4s ease, visibility 0s;
+  }
+  .duzen-a {
+    grid-template-columns: 1.05fr 0.85fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+      'a c d e'
+      'b c f f';
+  }
+  .duzen-b {
+    grid-template-columns: 0.95fr 1fr 1fr 0.9fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+      'a b d d'
+      'a c e f';
+  }
+  .c {
+    overflow: hidden;
+    background: var(--bg-raised);
+    min-height: 0;
+  }
+  .c1 { grid-area: a; }
+  .c2 { grid-area: b; }
+  .c3 { grid-area: c; }
+  .c4 { grid-area: d; }
+  .c5 { grid-area: e; }
+  .c6 { grid-area: f; }
+  .c :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  /* Tek hareket: aktif slayttaki fotoğraflar yavaşça yerine oturur. */
+  .slide[data-active] .c :global(img) {
+    animation: settle 9s ease-out both;
+  }
+  @keyframes settle {
+    from {
+      transform: scale(1.08);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+
+  .shade {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 62% 50% at 50% 52%, rgba(15, 13, 11, 0.86), rgba(15, 13, 11, 0.4) 72%, rgba(15, 13, 11, 0.22)),
+      linear-gradient(to top, rgba(15, 13, 11, 0.85), rgba(15, 13, 11, 0) 22%);
+  }
+
+  /* ---------- Orta yazı ---------- */
+  .center {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    text-align: center;
+    padding: 6rem var(--gutter) 7rem;
+    pointer-events: none;
+  }
+  .center > * {
+    pointer-events: auto;
+  }
+  .kicker {
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    color: var(--copper-light);
+    padding-left: 0.42em; /* harf aralığı yüzünden kayan ortalamayı düzeltir */
+  }
+  h1 {
+    margin-top: 1rem;
+    font-size: clamp(2.9rem, 1.2rem + 7vw, 8rem);
+    font-weight: 600;
+    font-stretch: 72%;
+    line-height: 0.92;
+    letter-spacing: 0.015em;
+    text-transform: uppercase;
+    color: var(--text);
+    text-shadow: 0 2px 30px rgba(0, 0, 0, 0.5);
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 2.25rem;
+  }
+  .actions .btn-line {
+    background: rgba(15, 13, 11, 0.35);
+  }
+
+  /* ---------- Alt şerit ---------- */
+  .foot {
+    position: absolute;
+    inset: auto 0 0 0;
+    z-index: 3;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1rem;
+    padding: 0 clamp(1rem, 0.5rem + 3vw, 4rem) 1.75rem;
+    padding-right: max(7rem, 4rem);
+  }
+  .social {
+    display: flex;
+    gap: 0.5rem;
+  }
+  .social a,
+  .ctrl button {
+    display: grid;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(15, 13, 11, 0.4);
+    box-shadow: inset 0 0 0 1px rgba(238, 231, 221, 0.28);
+    color: var(--text);
+    cursor: pointer;
+  }
+  .social a:hover,
+  .ctrl button:hover {
+    color: var(--copper-light);
+    box-shadow: inset 0 0 0 1px var(--copper);
+  }
+  .social :global(svg),
+  .ctrl :global(svg) {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+  .addr {
+    font-size: 0.88rem;
+    color: var(--text-soft);
+    text-align: center;
+  }
+  .addr a {
+    color: var(--text);
+    text-decoration: none;
+  }
+  .sep {
+    display: inline-block;
+    width: 1.5rem;
+    height: 1px;
+    margin: 0 0.75rem;
+    vertical-align: middle;
+    background: var(--copper);
+  }
+  .ctrl {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+  }
+  .cap {
+    margin-right: 0.75rem;
+    font-size: 0.88rem;
+    color: var(--text-soft);
+    text-align: right;
+  }
+  .count {
+    white-space: nowrap;
+    color: var(--copper-light);
+    font-variant-numeric: tabular-nums;
+    margin-right: 0.4rem;
+  }
+  .ctrl :global(.i-play) {
+    display: none;
+  }
+  .paused .ctrl :global(.i-play) {
+    display: block;
+  }
+  .paused .ctrl :global(.i-pause) {
+    display: none;
+  }
+
+  @media (max-width: 1100px) {
+    .foot {
+      grid-template-columns: auto 1fr;
+    }
+    .addr {
+      display: none;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .hero {
+      height: calc(100svh - 3.6rem - env(safe-area-inset-bottom));
+      min-height: 30rem;
+    }
+    .slide {
+      gap: 4px;
+      padding: 4px;
+    }
+    .duzen-a {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr 0.8fr;
+      grid-template-areas:
+        'a c'
+        'b c'
+        'f f';
+    }
+    .duzen-b {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr 0.8fr;
+      grid-template-areas:
+        'a b'
+        'a c'
+        'd d';
+    }
+    .duzen-a .c4,
+    .duzen-a .c5,
+    .duzen-b .c5,
+    .duzen-b .c6 {
+      display: none;
+    }
+    .shade {
+      background:
+        radial-gradient(ellipse 90% 40% at 50% 48%, rgba(15, 13, 11, 0.8), rgba(15, 13, 11, 0.4) 75%, rgba(15, 13, 11, 0.25)),
+        linear-gradient(to top, rgba(15, 13, 11, 0.85), rgba(15, 13, 11, 0) 25%);
+    }
+    .foot {
+      padding: 0 1rem 1rem;
+    }
+    .cap .name {
+      display: none;
+    }
+    .cap {
+      margin-right: 0.25rem;
+    }
+    .kicker {
+      font-size: 0.72rem;
+      letter-spacing: 0.3em;
+    }
+    h1 {
+      font-size: min(15vw, 4.6rem);
+    }
+    .actions {
+      display: grid;
+      width: min(100%, 17rem);
+    }
+  }
+</style>

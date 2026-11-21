@@ -1,0 +1,98 @@
+---
+import Icon from './Icon.astro';
+import { business, wa, waMessages } from '../data/site';
+---
+
+<!-- Masaüstü: sağ altta sabit WhatsApp. Mobil: altta üç düğmeli çubuk. -->
+<a class="float-wa" href={wa(waMessages.general)} target="_blank" rel="noopener" data-track="whatsapp-float">
+  <Icon name="whatsapp" />
+  <span class="visually-hidden">WhatsApp’tan yazın</span>
+</a>
+
+<nav class="mobile-bar" aria-label="Hızlı iletişim">
+  <a class="wa" href={wa(waMessages.general)} target="_blank" rel="noopener" data-track="whatsapp-mobilbar">
+    <Icon name="whatsapp" /> WhatsApp
+  </a>
+  <a href={`tel:${business.phones[0].tel}`} data-track="telefon-mobilbar"><Icon name="phone" /> Ara</a>
+  <a href={business.directionsUrl} target="_blank" rel="noopener" data-track="yoltarifi-mobilbar">
+    <Icon name="pin" /> Yol tarifi
+  </a>
+</nav>
+
+<script>
+  // GA4 kurulunca her iletişim tıklaması olay olarak ölçülür.
+  document.addEventListener('click', (e) => {
+    const el = (e.target as HTMLElement).closest<HTMLElement>('[data-track]');
+    if (!el) return;
+    const w = window as unknown as { gtag?: (...a: unknown[]) => void };
+    w.gtag?.('event', 'iletisim_tiklama', { yer: el.dataset.track, sayfa: location.pathname });
+  });
+</script>
+
+<style>
+  .float-wa {
+    position: fixed;
+    right: 1.5rem;
+    bottom: 1.5rem;
+    z-index: 60;
+    display: grid;
+    place-items: center;
+    width: 3.75rem;
+    height: 3.75rem;
+    border-radius: 50%;
+    background: var(--wa-green);
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(11, 61, 36, 0.35);
+  }
+  .float-wa :global(svg) {
+    width: 2rem;
+    height: 2rem;
+  }
+  .float-wa:hover {
+    box-shadow: 0 6px 26px rgba(37, 211, 102, 0.55);
+  }
+  .mobile-bar {
+    display: none;
+  }
+
+  @media (max-width: 720px) {
+    .float-wa {
+      display: none;
+    }
+    .mobile-bar {
+      position: fixed;
+      inset: auto 0 0 0;
+      z-index: 60;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      background: var(--bg-deep);
+      border-top: 1px solid var(--line);
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    .mobile-bar a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      min-height: 3.6rem;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .mobile-bar a + a {
+      border-left: 1px solid var(--line);
+    }
+    .mobile-bar :global(svg) {
+      width: 1.3rem;
+      height: 1.3rem;
+    }
+    .mobile-bar .wa {
+      background: var(--wa-green);
+      color: var(--wa-ink);
+    }
+    :global(body) {
+      padding-bottom: calc(3.6rem + env(safe-area-inset-bottom));
+    }
+  }
+</style>

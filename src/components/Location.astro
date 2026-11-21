@@ -1,0 +1,128 @@
+---
+import Icon from './Icon.astro';
+import { business, fullAddress, wa, waMessages } from '../data/site';
+---
+
+<section class="section loc" aria-labelledby="magaza">
+  <div class="wrap grid">
+    <div class="info">
+      <h2 id="magaza">Mağazamıza bekleriz</h2>
+      <dl>
+        <div>
+          <dt><Icon name="pin" /> Adres</dt>
+          <dd>{fullAddress}</dd>
+        </div>
+        <div>
+          <dt><Icon name="clock" /> Saatler</dt>
+          <dd>
+            {business.hours.map((h) => <span class="line">{h.days}: {h.open ? `${h.open}–${h.close}` : 'Kapalı'}</span>)}
+          </dd>
+        </div>
+        <div>
+          <dt><Icon name="phone" /> Telefon</dt>
+          <dd>
+            {business.phones.map((p) => <a class="line" href={`tel:${p.tel}`}>{p.label}</a>)}
+          </dd>
+        </div>
+      </dl>
+
+      <div class="actions">
+        <a class="btn btn-copper" href={business.directionsUrl} target="_blank" rel="noopener" data-track="yoltarifi-konum">
+          <Icon name="pin" /> Yol tarifi al
+        </a>
+        <a class="btn btn-line" href={wa(waMessages.general)} target="_blank" rel="noopener" data-track="whatsapp-konum">
+          <Icon name="whatsapp" /> WhatsApp: {business.whatsapp.label}
+        </a>
+      </div>
+    </div>
+
+    <div class="map">
+      <iframe
+        src={business.mapEmbedUrl}
+        title="İleri Elektrik konumu, Google Haritalar"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        allowfullscreen></iframe>
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: clamp(2rem, 1rem + 4vw, 5rem);
+    align-items: stretch;
+  }
+  .info {
+    display: grid;
+    align-content: start;
+    gap: 1.25rem;
+  }
+  dl {
+    margin: 0.5rem 0 0;
+    display: grid;
+    gap: 1rem;
+  }
+  dl > div {
+    display: grid;
+    grid-template-columns: 8rem 1fr;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--line);
+  }
+  dt {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    align-self: start;
+  }
+  dt :global(svg) {
+    width: 1.1rem;
+    height: 1.1rem;
+    color: var(--copper-light);
+  }
+  dd {
+    margin: 0;
+    color: var(--text-soft);
+  }
+  .line {
+    display: block;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+  .map {
+    position: relative;
+    min-height: 24rem;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background:
+      repeating-linear-gradient(0deg, transparent 0 46px, rgba(255, 255, 255, 0.05) 46px 48px),
+      repeating-linear-gradient(90deg, transparent 0 46px, rgba(255, 255, 255, 0.05) 46px 48px),
+      var(--bg-raised);
+  }
+  .map iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  @media (max-width: 860px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+    .map {
+      min-height: 18rem;
+    }
+    dl > div {
+      grid-template-columns: 1fr;
+      gap: 0.25rem;
+    }
+  }
+</style>

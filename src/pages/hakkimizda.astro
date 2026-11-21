@@ -1,0 +1,98 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Reviews from '../components/Reviews.astro';
+import Meander from '../components/Meander.astro';
+import Location from '../components/Location.astro';
+import { business } from '../data/site';
+import { gorseller } from '../data/katalog';
+---
+
+<Base
+  title="Hakkımızda: 1997’den Beri Denizli’de | İleri Elektrik & Aydınlatma"
+  description="İleri Elektrik & Aydınlatma 1997’den beri Denizli Pamukkale Topraklık’ta avize, aydınlatma ve elektrik malzemesi satışı ve uygulaması yapıyor."
+  ogImage={gorseller['ic-03'].src}
+>
+  <PageHeader
+    title="Hakkımızda"
+    crumbs={[{ href: '/hakkimizda/', label: 'Hakkımızda' }]}
+    images={[gorseller['ic-03'], gorseller['dis-13'], gorseller['ic-11']]}
+  />
+
+  <section class="section" aria-labelledby="biz-kimiz">
+    <div class="wrap story">
+      <div class="side">
+        <Meander />
+        <h2 id="biz-kimiz">Biz kimiz?</h2>
+        <p class="since"><span>{business.founded}</span>yılından beri</p>
+      </div>
+      <div class="prose">
+        <p class="first">
+          İleri Elektrik, {business.founded} yılından beri deneyimli, uzman satış ve uygulama kadrosuyla elektrik sektöründe
+          faaliyet gösteren, yeniliklere açık ve idealist bir firmadır.
+        </p>
+        <p>
+          Hepsi alanında uzman personelimiz, birinci sınıf ve detaylı işçilik ile hizmet anlayışını uygulamalarımıza taşır.
+          İleri Elektrik olarak amacımız, müşterilerimize ilk seferinde, her defasında ve zamanında çağın koşullarına uygun
+          hizmet ve ürün sunmaktır.
+        </p>
+        <p>
+          Hizmetimiz, çözümün sunulmasıyla bitmeyip çözümün kalitesinin daimi kontrolünü de içermektedir. Sürekli kendini
+          yenileyen ve geliştiren İleri Elektrik, tecrübelerini sunduğu hizmetin her aşamasında akılcı çözümlere
+          dönüştürmektedir.
+        </p>
+        <p>
+          Uzun vadede müşteri memnuniyetini vizyonu hâline getiren İleri Elektrik, sağladığı çözümün kalitesinin
+          takipçisidir. Bütün uygulamalar en ince ayrıntısına kadar projelendirilip hesaplanır.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <Reviews />
+  <Location />
+</Base>
+
+<style>
+  .story {
+    display: grid;
+    grid-template-columns: minmax(14rem, 0.7fr) 1.3fr;
+    gap: clamp(2rem, 1rem + 5vw, 6rem);
+    align-items: start;
+  }
+  .side {
+    position: sticky;
+    top: 7.5rem;
+    display: grid;
+    gap: 1.1rem;
+  }
+  .since {
+    color: var(--text-soft);
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+  }
+  .since span {
+    display: block;
+    font: 600 clamp(4rem, 2.5rem + 5vw, 7rem) / 0.9 var(--font-display);
+    font-stretch: 70%;
+    letter-spacing: 0.01em;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--copper);
+  }
+  .prose p {
+    max-width: 62ch;
+  }
+  .prose .first {
+    font-size: var(--step-1);
+    line-height: 1.5;
+    color: var(--text);
+  }
+  @media (max-width: 860px) {
+    .story {
+      grid-template-columns: 1fr;
+    }
+    .side {
+      position: static;
+    }
+  }
+</style>

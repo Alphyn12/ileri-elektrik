@@ -1,0 +1,25 @@
+---
+// Logodaki kıvrımlı çizginin yatay tekrarı: bölüm ayracı olarak kullanılan küçük marka imzası.
+interface Props {
+  class?: string;
+}
+const { class: cls } = Astro.props;
+---
+
+<svg class:list={['meander', cls]} viewBox="0 0 120 12" aria-hidden="true" focusable="false" preserveAspectRatio="xMinYMid meet">
+  <path
+    d="M0 10.5H10V1.5H22V10.5H34V1.5H46V10.5H58V1.5H70V10.5H82V1.5H94V10.5H106V1.5H120"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.4"
+    stroke-linejoin="miter"></path>
+</svg>
+
+<style>
+  .meander {
+    display: block;
+    width: 7.5rem;
+    height: 0.75rem;
+    color: var(--copper);
+  }
+</style>

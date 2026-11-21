@@ -1,0 +1,238 @@
+@import '@fontsource-variable/bricolage-grotesque/standard.css';
+@import '@fontsource-variable/instrument-sans/standard.css';
+
+/* ---------- Tokenlar ----------
+   Marka kimliği: logodaki bakır, katalog sayfalarındaki koyu zemin. */
+:root {
+  --bg: #171412; /* kömür: katalog sayfasının siyahı, hafif sıcak */
+  --bg-raised: #211c18;
+  --bg-deep: #0f0d0b;
+  --line: #372f28;
+  --text: #eee7dd;
+  --text-soft: #b3a798;
+  --copper: #c3834f; /* logonun bakırı */
+  --copper-light: #e2ae80;
+  --wa-green: #25d366;
+  --wa-ink: #0b3d24;
+
+  --font-display: 'Bricolage Grotesque Variable', 'Arial Narrow', sans-serif;
+  --font-body: 'Instrument Sans Variable', system-ui, sans-serif;
+
+  --step--1: 0.875rem;
+  --step-0: 1.0625rem;
+  --step-1: 1.3125rem;
+  --step-2: 1.65rem;
+  --step-3: clamp(1.9rem, 1.4rem + 1.8vw, 2.6rem);
+  --step-4: clamp(2.6rem, 1.4rem + 4.6vw, 5.2rem);
+
+  --gutter: clamp(1rem, 0.5rem + 2.5vw, 2.5rem);
+  --max: 78rem;
+  --radius: 4px;
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 6rem;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-stretch: 80%;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+h2 {
+  font-size: var(--step-3);
+  font-stretch: 74%;
+  letter-spacing: 0.015em;
+  text-transform: uppercase;
+}
+
+::selection {
+  background: var(--copper);
+  color: var(--bg-deep);
+}
+
+html {
+  scrollbar-color: var(--line) var(--bg-deep);
+}
+
+h3 {
+  font-size: var(--step-1);
+  font-stretch: 90%;
+  line-height: 1.2;
+}
+
+p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--copper-light);
+  outline-offset: 3px;
+}
+
+.wrap {
+  width: 100%;
+  max-width: var(--max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.measure {
+  max-width: 38em;
+}
+
+.lede {
+  font-size: var(--step-1);
+  line-height: 1.5;
+  color: var(--text-soft);
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- Butonlar ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  min-height: 3rem;
+  padding: 0.75em 1.4em;
+  border-radius: var(--radius);
+  border: 0;
+  font: 600 0.97rem/1.1 var(--font-body);
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn svg {
+  width: 1.25em;
+  height: 1.25em;
+  flex: none;
+}
+
+.btn-copper {
+  background: var(--copper);
+  color: var(--bg-deep);
+}
+
+.btn-copper:hover {
+  background: var(--copper-light);
+}
+
+.btn-line {
+  background: transparent;
+  color: inherit;
+  box-shadow: inset 0 0 0 1px currentColor;
+}
+
+.btn-line:hover {
+  background: rgba(238, 231, 221, 0.08);
+}
+
+.btn-wa {
+  background: var(--wa-green);
+  color: var(--wa-ink);
+}
+
+.btn-wa:hover {
+  box-shadow: 0 6px 24px -6px rgba(37, 211, 102, 0.6);
+}
+
+/* ---------- Bölümler ---------- */
+.section {
+  padding-block: clamp(3.5rem, 2rem + 6vw, 7rem);
+}
+
+.section-head {
+  display: grid;
+  gap: 0.9rem;
+  margin-bottom: clamp(2rem, 1rem + 3vw, 3.25rem);
+}
+
+.raised {
+  background: var(--bg-raised);
+}
+
+/* ---------- Düz metin sayfaları ---------- */
+.prose {
+  max-width: 42em;
+}
+.prose > * + * {
+  margin-top: 1.1em;
+}
+.prose h2 {
+  font-size: var(--step-2);
+  margin-top: 2.2em;
+}
+.prose > h2:first-child {
+  margin-top: 0;
+  font-size: var(--step-3);
+}
+.prose p,
+.prose li {
+  color: var(--text-soft);
+}
+.prose a {
+  color: var(--copper-light);
+}
+.prose ul {
+  padding-left: 1.2em;
+}
+.prose li + li {
+  margin-top: 0.4em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

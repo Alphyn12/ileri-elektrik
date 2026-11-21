@@ -1,0 +1,349 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Icon from '../components/Icon.astro';
+import Meander from '../components/Meander.astro';
+import Faq from '../components/Faq.astro';
+import Location from '../components/Location.astro';
+import { wa, waMessages } from '../data/site';
+import { gorseller } from '../data/katalog';
+
+import malzemeImg from '../assets/img/anahtar-priz.jpg';
+import tesisatImg from '../assets/img/pano.jpg';
+
+const hizmetler = [
+  {
+    id: 'avize',
+    title: 'Avize', short: 'Avize',
+    img: gorseller['ic-02'].src,
+    alt: gorseller['ic-02'].alt,
+    text: 'Klasik kristalden modern sarkıta; salon, yemek odası, yatak odası ve çocuk odası için avize çeşitleri. Odanızın ölçüsüne ve tavan yüksekliğine göre doğru boyutu birlikte seçiyoruz.',
+    items: ['Kristal avize', 'Modern avize', 'Sarkıt avize', 'Plafonyer', 'Aplik ve lambader'],
+    msg: 'Merhaba, avize hakkında bilgi almak istiyorum.',
+  },
+  {
+    id: 'ic-mekan-aydinlatma',
+    title: 'İç mekân aydınlatma', short: 'İç mekân',
+    img: gorseller['ic-09'].src,
+    alt: gorseller['ic-09'].alt,
+    text: 'Evde ve iş yerinde her alana uygun ışık. Hangi odada hangi ışık renginin ve gücünün rahat edeceğini anlatıyor, eski ampullerinizi LED’e çevirirken doğru karşılığı buluyoruz.',
+    items: ['LED ampul ve panel', 'Spot ve ray spot', 'Şerit LED ve gizli ışık', 'Sarkıt lambalar'],
+    msg: 'Merhaba, iç mekân aydınlatması hakkında bilgi almak istiyorum.',
+  },
+  {
+    id: 'dis-mekan-aydinlatma',
+    title: 'Dış mekân ve bahçe aydınlatması', short: 'Dış mekân ve bahçe',
+    img: gorseller['dis-08'].src,
+    alt: gorseller['dis-08'].alt,
+    text: 'Cephe, kapı önü, balkon ve bahçe için suya ve toza dayanıklı armatürler. Binanızın mimarisini gece de öne çıkaran, yolu güvenle aydınlatan çözümler.',
+    items: ['Cephe aplikleri', 'Bahçe direkleri', 'Zemin armatürleri', 'Projektörler', 'Sensörlü lambalar'],
+    msg: 'Merhaba, dış mekân ve bahçe aydınlatması hakkında bilgi almak istiyorum.',
+  },
+  {
+    id: 'elektrik-malzemeleri',
+    title: 'Elektrik malzemeleri', short: 'Elektrik malzemeleri',
+    img: malzemeImg,
+    alt: 'Koyu duvarda fiş takılı beyaz topraklı priz',
+    text: 'Anahtar ve prizden sigortaya, kablodan buata kadar elektrik malzemesinin tamamı tek yerde. Ustalar ve müteahhitler için listeye göre toplu hazırlık yapıyoruz.',
+    items: ['Anahtar ve priz', 'Sigorta ve kaçak akım rölesi', 'Pano', 'Kablo, buat ve klemens'],
+    msg: waMessages.teklif,
+  },
+  {
+    id: 'elektrik-tesisati-taahhut',
+    title: 'Elektrik tesisatı ve taahhüt', short: 'Tesisat ve taahhüt',
+    img: tesisatImg,
+    alt: 'Elektrik panosunda sıralı sigortalar ve kablolar',
+    text: 'Apartman, dükkân, ofis ve kamu binalarında elektrik tesisatı ve malzeme temini.',
+    items: ['Apartman ve konut', 'Dükkân ve ofis', 'Kamu binaları', 'Malzeme temini'],
+    msg: 'Merhaba, elektrik tesisatı / taahhüt işi için görüşmek istiyorum.',
+  },
+];
+
+const faq = [
+  {
+    q: 'Ürünleri ve fiyatları sitede neden göremiyorum?',
+    a: 'Modellerimiz ve fiyatlar sık yenilendiği için sitede liste tutmuyoruz. WhatsApp’tan yazın ya da mağazamıza uğrayın; güncel modelleri ve fiyatları hemen söyleyelim.',
+  },
+  {
+    q: 'Odama ne büyüklükte avize almalıyım?',
+    a: 'Pratik bir kural: odanın eni ile boyunu metre olarak toplayıp 8 ile çarpın; sonuç avizenin yaklaşık çapını santimetre olarak verir. Örneğin 4×5 metrelik bir salon için yaklaşık 70–75 cm çaplı bir avize uygundur.',
+  },
+  {
+    q: 'Sarı ışık mı beyaz ışık mı almalıyım?',
+    a: 'Salon ve yatak odası için 2700–3000 K sıcak beyaz, mutfak, banyo ve çalışma alanı için 4000 K gün ışığı, depo ve garaj gibi yerler için 6500 K beyaz ışık uygundur.',
+  },
+  {
+    q: 'Usta ve müteahhitlere toplu teklif veriyor musunuz?',
+    a: 'Evet. Malzeme listenizi ya da projenizi WhatsApp’tan gönderin, toplu alım için teklif hazırlayalım.',
+  },
+];
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'İleri Elektrik & Aydınlatma hizmetleri',
+  itemListElement: hizmetler.map((h, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    item: {
+      '@type': 'Service',
+      name: h.title,
+      description: h.text,
+      areaServed: { '@type': 'City', name: 'Denizli' },
+      provider: { '@id': 'https://www.ilerielektrik.com.tr/#isletme' },
+    },
+  })),
+};
+---
+
+<Base
+  title="Hizmetlerimiz: Avize, Aydınlatma ve Elektrik | İleri Elektrik Denizli"
+  description="Denizli’de avize, iç ve dış mekân aydınlatma, bahçe aydınlatması, elektrik malzemeleri ve elektrik taahhüt işleri. 1997’den beri Pamukkale Topraklık’ta."
+  ogImage={gorseller['ic-02'].src}
+  schema={[serviceSchema]}
+>
+  <PageHeader
+    title="Hizmetlerimiz"
+    lede="Avizeden bahçe ışığına, prizden komple tesisata. Işıkla ve elektrikle ilgili her işinizi tek yerden çözüyoruz."
+    crumbs={[{ href: '/hizmetlerimiz/', label: 'Hizmetlerimiz' }]}
+    images={[gorseller['ic-04'], gorseller['dis-01'], gorseller['ic-12'], gorseller['dis-10']]}
+  />
+
+  <nav class="jump" aria-label="Hizmetler">
+    <ul class="wrap">
+      {hizmetler.map((h) => <li><a href={`#${h.id}`}>{h.short}</a></li>)}
+    </ul>
+  </nav>
+
+  <div class="list">
+    {
+      hizmetler.map((h, i) => (
+        <section id={h.id} class:list={['item', { flip: i % 2 === 1 }]} aria-labelledby={`${h.id}-baslik`}>
+          <div class="wrap row">
+            <div class="media">
+              <Image src={h.img} alt={h.alt} widths={[480, 760, 1100]} sizes="(max-width: 860px) 92vw, 46vw" />
+            </div>
+            <div class="body">
+              <h2 id={`${h.id}-baslik`}>{h.title}</h2>
+              <p class="text">{h.text}</p>
+              <ul class="tags">
+                {h.items.map((t) => <li>{t}</li>)}
+              </ul>
+              <a class="ask" href={wa(h.msg)} target="_blank" rel="noopener" data-track={`whatsapp-hizmet-${h.id}`}>
+                <span class="ask-ic"><Icon name="whatsapp" /></span>
+                <span>WhatsApp’tan bilgi alın</span>
+              </a>
+            </div>
+          </div>
+        </section>
+      ))
+    }
+  </div>
+
+  <section class="band" aria-labelledby="magazada">
+    <div class="wrap band-in">
+      <Meander />
+      <h2 id="magazada">Mağazamızı ziyaret edin</h2>
+      <p class="lede measure">Avize ve armatürlerimizi yanarken, yakından görün; size en uygun olanı birlikte seçelim.</p>
+      <div class="band-actions">
+        <a class="btn btn-wa" href={wa(waMessages.general)} target="_blank" rel="noopener" data-track="whatsapp-hizmetler-bant">
+          <Icon name="whatsapp" /> WhatsApp’tan yazın
+        </a>
+        <a class="btn btn-line" href="/iletisim/">Adres ve yol tarifi</a>
+      </div>
+    </div>
+  </section>
+
+  <Faq items={faq} heading="Sık sorulan sorular" />
+  <Location />
+</Base>
+
+<style>
+  .jump {
+    position: sticky;
+    top: 5.25rem;
+    z-index: 10;
+    background: rgba(23, 20, 18, 0.94);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .jump ul {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.25rem 1.5rem;
+    list-style: none;
+    margin: 0 auto;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .jump a {
+    display: block;
+    padding: 1rem 0;
+    white-space: nowrap;
+    font-size: 0.76rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--text-soft);
+    border-bottom: 1px solid transparent;
+  }
+  .jump a:hover {
+    color: var(--copper-light);
+    border-bottom-color: var(--copper);
+  }
+
+  .item {
+    padding-block: clamp(3.5rem, 2rem + 5vw, 6.5rem);
+    scroll-margin-top: 8.5rem;
+  }
+  .item + .item {
+    border-top: 1px solid var(--line);
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(2rem, 1rem + 5vw, 6rem);
+    align-items: center;
+  }
+  .flip .media {
+    order: 2;
+  }
+
+  /* İnce dokunuş: fotoğrafın arkasında kaydırılmış bakır çerçeve */
+  .media {
+    position: relative;
+    margin: 0 14px 14px 0;
+  }
+  .flip .media {
+    margin: 0 0 14px 14px;
+  }
+  .media::before {
+    content: '';
+    position: absolute;
+    inset: 14px -14px -14px 14px;
+    border: 1px solid var(--copper);
+    opacity: 0.55;
+    pointer-events: none;
+  }
+  .flip .media::before {
+    inset: 14px 14px -14px -14px;
+  }
+  .media :global(img) {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 5 / 4;
+    object-fit: cover;
+  }
+
+  .body {
+    display: grid;
+    justify-items: start;
+    gap: 1.25rem;
+  }
+  .body h2 {
+    font-size: var(--step-3);
+    font-stretch: 74%;
+    text-transform: uppercase;
+    letter-spacing: 0.015em;
+  }
+  .text {
+    color: var(--text-soft);
+    max-width: 34em;
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .tags li {
+    padding: 0.35rem 0.8rem;
+    font-size: 0.88rem;
+    color: var(--text);
+    box-shadow: inset 0 0 0 1px var(--line);
+    border-radius: var(--radius);
+  }
+  /* Hizmete özel WhatsApp butonu: bakır çerçeve, yeşil simge kutusu; üzerine gelince bakırla dolar. */
+  .ask {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+    min-height: 3rem;
+    margin-top: 0.5rem;
+    padding: 0.4rem 1.3rem 0.4rem 0.4rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--text);
+    text-decoration: none;
+    border-radius: var(--radius);
+    box-shadow: inset 0 0 0 1px var(--copper);
+    transition: background-color 0.25s ease, color 0.25s ease;
+  }
+  .ask-ic {
+    display: grid;
+    place-items: center;
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 3px;
+    background: var(--wa-green);
+    color: var(--wa-ink);
+  }
+  .ask-ic :global(svg) {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+  .ask:hover {
+    background: var(--copper);
+    color: var(--bg-deep);
+  }
+
+  .band {
+    padding-block: clamp(4rem, 2rem + 6vw, 7rem);
+    background:
+      radial-gradient(ellipse 50% 80% at 50% 0%, rgba(195, 131, 79, 0.16), transparent 70%),
+      var(--bg-deep);
+    border-block: 1px solid var(--line);
+    text-align: center;
+  }
+  .band-in {
+    display: grid;
+    justify-items: center;
+    gap: 1.25rem;
+  }
+  .band h2 {
+    font-size: var(--step-3);
+    font-stretch: 74%;
+    text-transform: uppercase;
+    letter-spacing: 0.015em;
+  }
+  .band-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+
+  @media (max-width: 860px) {
+    .row {
+      grid-template-columns: 1fr;
+    }
+    .flip .media {
+      order: 0;
+      margin: 0 14px 14px 0;
+    }
+    .flip .media::before {
+      inset: 14px -14px -14px 14px;
+    }
+  }
+  @media (max-width: 920px) {
+    .jump {
+      top: 5.25rem;
+    }
+  }
+</style>

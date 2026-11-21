@@ -1,0 +1,55 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { nav, wa, waMessages } from '../data/site';
+---
+
+<Base title="Sayfa bulunamadı | İleri Elektrik" description="Aradığınız sayfa bulunamadı." noindex>
+  <section class="nf">
+    <div class="wrap">
+      <p class="code" aria-hidden="true">404</p>
+      <h1>Bu sayfanın ışığı yanmıyor.</h1>
+      <p class="lede measure">Aradığınız sayfa taşınmış ya da hiç olmamış olabilir. Aşağıdaki sayfalardan devam edin ya da bize WhatsApp’tan yazın.</p>
+      <ul>
+        <li><a href="/">Ana sayfa</a></li>
+        {nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+      </ul>
+      <a class="btn btn-copper" href={wa(waMessages.general)} target="_blank" rel="noopener" data-track="whatsapp-404">
+        <Icon name="whatsapp" /> WhatsApp’tan yazın
+      </a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    padding-block: clamp(4rem, 2rem + 8vw, 8rem);
+  }
+  .code {
+    font: 700 clamp(5rem, 3rem + 10vw, 10rem) / 0.9 var(--font-display);
+    font-stretch: 75%;
+    color: var(--bg-raised);
+    -webkit-text-stroke: 1px var(--line);
+  }
+  h1 {
+    margin-top: 1rem;
+    font-size: var(--step-4);
+    font-stretch: 84%;
+    max-width: 14ch;
+  }
+  .lede {
+    margin-top: 1.25rem;
+  }
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.4rem;
+    margin: 2rem 0;
+    padding: 0;
+    list-style: none;
+  }
+  a:not(.btn) {
+    color: var(--text);
+    text-underline-offset: 0.25em;
+  }
+</style>

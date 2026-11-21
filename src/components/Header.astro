@@ -1,0 +1,248 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { business, nav, wa, waMessages } from '../data/site';
+
+interface Props {
+  /** Anasayfada slaytın üstünde şeffaf durur. */
+  overlay?: boolean;
+}
+const { overlay = false } = Astro.props;
+const path = Astro.url.pathname;
+const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+---
+
+<header class:list={['site-header', { overlay }]}>
+  <div class="bar">
+    <a href="/" class="home" aria-label={`${business.brand}, ana sayfa`}><Logo /></a>
+
+    <nav id="menu" class="nav" aria-label="Ana menü">
+      <ul>
+        {
+          nav.map((item) => (
+            <li>
+              <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="menu-contact">
+        <a class="btn btn-wa" href={wa(waMessages.general)} target="_blank" rel="noopener" data-track="whatsapp-menu">
+          <Icon name="whatsapp" /> WhatsApp’tan yazın
+        </a>
+        <a class="btn btn-line" href={`tel:${business.phones[0].tel}`}><Icon name="phone" /> {business.phones[0].label}</a>
+      </div>
+    </nav>
+
+    <div class="tools">
+      <a class="ig" href={business.instagram} target="_blank" rel="noopener" aria-label="Instagram’da İleri Elektrik">
+        <Icon name="instagram" />
+      </a>
+      <a class="btn btn-wa cta" href={wa(waMessages.general)} target="_blank" rel="noopener" data-track="whatsapp-header">
+        <Icon name="whatsapp" /> WhatsApp
+      </a>
+      <button class="menu-btn" type="button" aria-controls="menu" aria-expanded="false">
+        <Icon name="menu" class="open" /><Icon name="close" class="shut" />
+        <span class="visually-hidden">Menü</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('.menu-btn');
+  const header = document.querySelector('.site-header');
+  const setOpen = (open: boolean) => {
+    btn?.setAttribute('aria-expanded', String(open));
+    header?.classList.toggle('is-open', open);
+    document.documentElement.classList.toggle('menu-open', open);
+  };
+  btn?.addEventListener('click', () => setOpen(btn.getAttribute('aria-expanded') !== 'true'));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && header?.classList.contains('is-open')) {
+      setOpen(false);
+      btn?.focus();
+    }
+  });
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(23, 20, 18, 0.94);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-header.overlay {
+    position: absolute;
+    inset: 0 0 auto 0;
+    background: linear-gradient(rgba(15, 13, 11, 0.75), rgba(15, 13, 11, 0));
+    backdrop-filter: none;
+    border-bottom: 0;
+  }
+  /* İnce dokunuş: anasayfada logodaki çizgi kendini çizerek açılır. */
+  .overlay :global(.mark .line) {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: draw 1.9s 0.35s cubic-bezier(0.6, 0, 0.3, 1) forwards;
+  }
+  @keyframes draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    min-height: 5.25rem;
+    padding-inline: clamp(1rem, 0.5rem + 3vw, 4rem);
+  }
+  .home {
+    text-decoration: none;
+    margin-right: auto;
+  }
+  .nav ul {
+    display: flex;
+    gap: 0.25rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .nav li a {
+    display: block;
+    padding: 0.5rem 0.8rem;
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text);
+    opacity: 0.82;
+    transition: opacity 0.15s ease, color 0.15s ease;
+  }
+  .nav li a:hover {
+    opacity: 1;
+    color: var(--copper-light);
+  }
+  .nav li a[aria-current='page'] {
+    opacity: 1;
+    color: var(--copper-light);
+  }
+  .menu-contact {
+    display: none;
+  }
+  .tools {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .ig {
+    display: grid;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    color: var(--text);
+    opacity: 0.82;
+  }
+  .ig:hover {
+    opacity: 1;
+    color: var(--copper-light);
+  }
+  .ig :global(svg) {
+    width: 1.3rem;
+    height: 1.3rem;
+  }
+  .cta {
+    min-height: 2.6rem;
+    padding: 0.55em 1.1em;
+    font-size: 0.9rem;
+  }
+  .menu-btn {
+    display: none;
+    width: 2.9rem;
+    height: 2.9rem;
+    border: 0;
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+  }
+  .menu-btn :global(svg) {
+    width: 1.7rem;
+    height: 1.7rem;
+  }
+  .menu-btn :global(.shut) {
+    display: none;
+  }
+
+  @media (max-width: 1100px) {
+    .cta {
+      display: none;
+    }
+  }
+
+  @media (max-width: 920px) {
+    .menu-btn {
+      display: inline-grid;
+      place-items: center;
+      position: relative;
+      z-index: 2;
+    }
+    .home,
+    .tools {
+      position: relative;
+      z-index: 2;
+    }
+    .nav {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      padding: 7rem var(--gutter) 2rem;
+      background: var(--bg-deep);
+      overflow-y: auto;
+    }
+    .is-open .nav {
+      display: grid;
+      align-content: start;
+      gap: 2.5rem;
+    }
+    .is-open .menu-btn :global(.open) {
+      display: none;
+    }
+    .is-open .menu-btn :global(.shut) {
+      display: block;
+    }
+    .nav ul {
+      flex-direction: column;
+      gap: 0;
+    }
+    .nav li + li {
+      border-top: 1px solid var(--line);
+    }
+    .nav li a {
+      padding: 1.1rem 0;
+      font-family: var(--font-display);
+      font-size: 1.9rem;
+      font-weight: 600;
+      font-stretch: 80%;
+      letter-spacing: 0.04em;
+    }
+    .menu-contact {
+      display: grid;
+      gap: 0.75rem;
+    }
+    :global(html.menu-open) {
+      overflow: hidden;
+    }
+    /* backdrop-filter sabit menüyü başlığın içine hapseder; menü açıkken kapatılır. */
+    .site-header.is-open {
+      backdrop-filter: none;
+      background: var(--bg-deep);
+    }
+  }
+</style>

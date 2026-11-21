@@ -1,0 +1,46 @@
+---
+import LogoMark from './LogoMark.astro';
+---
+
+<span class="logo">
+  <LogoMark class="mark" />
+  <span class="words">
+    <span class="name">İleri Elektrik</span>
+    <span class="sub">&amp; Aydınlatma</span>
+  </span>
+</span>
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .logo :global(.mark) {
+    width: 2.75rem;
+    height: 2.75rem;
+    flex: none;
+  }
+  .words {
+    display: grid;
+    gap: 0.3rem;
+  }
+  .name {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 1.12rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--copper-light);
+  }
+  .sub {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 0.72rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+  }
+</style>
