@@ -36,7 +36,7 @@ Bütün görseller Unsplash'tan (Unsplash Lisansı: ticari kullanım serbest, at
 | ic-12.jpg | 1770085140346-9a2cfca85178 |
 | ic-13.jpg | 1570005616859-784c0e1644c5 |
 | ic-14.jpg | 1768836180167-6d4a25c421b2 |
-| ele-01.jpg | 1571233594617-434b02ec3dbb |
+| ele-01.jpg | Legrand RX³ 419499 resmî ürün fotoğrafı (assets.legrand.com), koyu zemine yerleştirildi |
 | ele-02.jpg | 1757061091034-7b1083c732e3 |
 | ele-03.jpg | Pexels 36272732 (pexels.com/photo/36272732, Pexels lisansı) |
 | ele-04.jpg | Pexels 30641386 (pexels.com/photo/30641386, Pexels lisansı) |

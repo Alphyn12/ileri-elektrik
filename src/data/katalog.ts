@@ -38,7 +38,7 @@ export const gorseller = {
   'dis-16': g('dis-16', 'ic', 'Duvarda ışık desenleri oluşturan modern aplikler'),
   'dis-17': g('dis-17', 'dis', 'Tuğla duvara sıcak ışık veren aplik'),
   'dis-18': g('dis-18', 'dis', 'Çimenlikte yanan küre bahçe armatürleri'),
-  'ele-01': g('ele-01', 'ele', 'Rayda sıralanmış yeni otomatik sigortalar'),
+  'ele-01': g('ele-01', 'ele', 'Legrand RX3 otomatik sigorta'),
   'ele-02': g('ele-02', 'ele', 'USB girişli siyah masaüstü priz'),
   'ele-03': g('ele-03', 'ele', 'Gri duvarda topraklı prize takılı siyah fiş'),
   'ele-04': g('ele-04', 'ele', 'Duvarda dokunmatik akıllı anahtar paneli'),

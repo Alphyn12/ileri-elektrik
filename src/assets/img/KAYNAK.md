@@ -6,7 +6,7 @@ Mağazanın gerçek fotoğrafları gelince **aynı dosya adıyla** üzerine yaz�
 | Dosya | Unsplash fotoğraf kimliği |
 |---|---|
 | anahtar-priz.jpg | 1586943029669-98ae685c5c4c |
-| pano.jpg | 1576446470246-499c738d1c8e |
+| pano.jpg | Legrand RX³ 419499 resmî ürün fotoğrafı (assets.legrand.com), koyu zemine yerleştirildi |
 | mimari.jpg | 1571440727633-ca6b05da2008 |
 
 Kaynak adresi: `https://unsplash.com/photos/<kimlik>` değil, `https://images.unsplash.com/photo-<kimlik>`.
